@@ -68,7 +68,7 @@ angular.module("ngDraggable", [])
                         if(! _dragEnabled)return;
 
 
-                        if(_hasTouch){
+                        if(_hasTouch || true){
                             cancelPress();
                             _pressTimer = setTimeout(function(){
                                 cancelPress();
@@ -140,7 +140,11 @@ angular.module("ngDraggable", [])
                         reset();
                         $document.off(_moveEvents, onmove);
                         $document.off(_releaseEvents, onrelease);
-
+                        var stopClick = function(e) {
+                            e.preventDefault();
+                            angular.element(e.target).off('click', stopClick);
+                        };
+                        element.find('a').click(stopClick);
                     }
                     var onDragComplete = function(evt) {
                         if(! onDragSuccessCallback)return;
